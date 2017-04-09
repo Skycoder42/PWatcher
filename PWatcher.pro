@@ -18,30 +18,33 @@ DEFINES += QT_USE_QSTRINGBUILDER
 
 win32 {
 	RC_ICONS += ./icons/main.ico
-	QMAKE_TARGET_COMPANY = "Skycoder Soft"
+	QMAKE_TARGET_COMPANY = "Skycoder42"
 	QMAKE_TARGET_PRODUCT = $$TARGET
 	QMAKE_TARGET_DESCRIPTION = $$QMAKE_TARGET_PRODUCT
 
 	DEFINES += "COMPANY=\"\\\"$$QMAKE_TARGET_COMPANY\\\"\""
 	DEFINES += "DISPLAY_NAME=\"\\\"$$QMAKE_TARGET_PRODUCT\\\"\""
+} else {
+	DEFINES += "COMPANY=\"\\\"Skycoder42\\\"\""
+	DEFINES += "DISPLAY_NAME=\"\\\"$$TARGET\\\"\""
 }
 
-include(C:\C++Libraries\Qt\QAtomicBool\qatomicbool.pri)
-include(C:\C++Libraries\Qt\QPathEdit\qpathedit.pri)
+include(/home/sky/Seafile/C++Libraries/Qt/OBSOLETE/QAtomicBool/qatomicbool.pri)
+include(/home/sky/Seafile/C++Libraries/Qt/Own/QPathEdit/qpathedit.pri)
 
 SOURCES += main.cpp\
-        controldialog.cpp \
-    displaywindow.cpp \
-    imageloader.cpp \
-    formatsdialog.cpp
+		controldialog.cpp \
+	displaywindow.cpp \
+	imageloader.cpp \
+	formatsdialog.cpp
 
 HEADERS  += controldialog.h \
-    displaywindow.h \
-    imageloader.h \
-    formatsdialog.h
+	displaywindow.h \
+	imageloader.h \
+	formatsdialog.h
 
 FORMS    += controldialog.ui \
-    formatsdialog.ui
+	formatsdialog.ui
 
 RESOURCES += \
-    pwatcher_res.qrc
+	pwatcher_res.qrc

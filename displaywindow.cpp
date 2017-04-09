@@ -271,7 +271,7 @@ void DisplayWindow::deleteCurrent()
 	if (retVal != 0)
 		qWarning("Failed to move file to trash");
 #else
-#error "NOT IMPLEMENTED"
+//#error "NOT IMPLEMENTED"
 #endif
 
 	this->next();
