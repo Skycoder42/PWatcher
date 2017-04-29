@@ -5,7 +5,7 @@ import de.skycoder42.quickextras 2.0
 
 ApplicationWindow {
 	visible: true
-	width: 640
+	width: 400
 	height: 480
 	title: qsTr("PWatcher")
 
