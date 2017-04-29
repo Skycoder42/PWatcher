@@ -1,7 +1,0 @@
-<RCC>
-    <qresource prefix="/icons">
-        <file alias="add.ico">icons/Fatcow-Farm-Fresh-Add.ico</file>
-        <file alias="remove.ico">icons/Fatcow-Farm-Fresh-Delete.ico</file>
-        <file alias="main.ico">icons/main.ico</file>
-    </qresource>
-</RCC>
