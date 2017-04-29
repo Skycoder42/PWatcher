@@ -29,8 +29,8 @@ win32 {
 	DEFINES += "DISPLAY_NAME=\"\\\"$$TARGET\\\"\""
 }
 
-include(/home/sky/Seafile/C++Libraries/Qt/OBSOLETE/QAtomicBool/qatomicbool.pri)
-include(/home/sky/Seafile/C++Libraries/Qt/Own/QPathEdit/qpathedit.pri)
+include(/var/C++Libraries/Qt/OBSOLETE/QAtomicBool/qatomicbool.pri)
+include(/var/C++Libraries/Qt/Own/QPathEdit/qpathedit.pri)
 
 SOURCES += main.cpp\
 		controldialog.cpp \
