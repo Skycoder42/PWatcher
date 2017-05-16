@@ -13,16 +13,21 @@ ApplicationWindow {
 		anchors.fill: parent
 		id: mainStack
 
+		signal keyPress(int key);
+
 		initialItem: SelectionView {
 			id: selectView
 		}
+
+		focus: true
+		Keys.onPressed: keyPress(event.key)
 	}
 
 	Component {
 		id: displayCmp
 
 		DisplayView {
-
+			focus: true
 		}
 	}
 }

@@ -10,32 +10,88 @@ Page {
 		z: -10
 	}
 
-	ProgressBar {
-		anchors.left: parent.left
-		anchors.right: parent.right
-		anchors.top: parent.top
-		z: 5
-
-		value: animator.progress
-		visible: value != 1.0
+	Connections {
+		target: mainStack
+		onKeyPress: {
+			switch(key) {
+			case Qt.Key_Right:
+				animList.incrementCurrentIndex();
+				break;
+			case Qt.Key_Left:
+				animList.decrementCurrentIndex();
+				break;
+			}
+		}
 	}
 
-	AnimatedImage {
-		id: animator
+	property var imageModel: [
+		"file:///home/sky/etc/Mine/Anime/Top/aB1eV5A_460sv.apng",
+		"file:///home/sky/etc/Mine/Anime/Top/a105tpyo.png",
+		"file:///home/sky/etc/Mine/Anime/Top/pokemon-porn-r34-2039262.gif",
+		"file:///home/sky/etc/Mine/Anime/Top/aB1eV5A_460sv.apng",
+		"file:///home/sky/etc/Mine/Anime/Top/a105tpyo.png",
+		"file:///home/sky/etc/Mine/Anime/Top/pokemon-porn-r34-2039262.gif",
+		"file:///home/sky/etc/Mine/Anime/Top/aB1eV5A_460sv.apng",
+		"file:///home/sky/etc/Mine/Anime/Top/a105tpyo.png",
+		"file:///home/sky/etc/Mine/Anime/Top/pokemon-porn-r34-2039262.gif",
+		"file:///home/sky/etc/Mine/Anime/Top/aB1eV5A_460sv.apng",
+		"file:///home/sky/etc/Mine/Anime/Top/a105tpyo.png",
+		"file:///home/sky/etc/Mine/Anime/Top/pokemon-porn-r34-2039262.gif",
+		"file:///home/sky/etc/Mine/Anime/Top/aB1eV5A_460sv.apng",
+		"file:///home/sky/etc/Mine/Anime/Top/a105tpyo.png",
+		"file:///home/sky/etc/Mine/Anime/Top/pokemon-porn-r34-2039262.gif",
+		"file:///home/sky/etc/Mine/Anime/Top/aB1eV5A_460sv.apng",
+		"file:///home/sky/etc/Mine/Anime/Top/a105tpyo.png",
+		"file:///home/sky/etc/Mine/Anime/Top/pokemon-porn-r34-2039262.gif",
+		"file:///home/sky/etc/Mine/Anime/Top/aB1eV5A_460sv.apng",
+		"file:///home/sky/etc/Mine/Anime/Top/a105tpyo.png",
+		"file:///home/sky/etc/Mine/Anime/Top/pokemon-porn-r34-2039262.gif",
+		"file:///home/sky/etc/Mine/Anime/Top/aB1eV5A_460sv.apng",
+		"file:///home/sky/etc/Mine/Anime/Top/a105tpyo.png",
+		"file:///home/sky/etc/Mine/Anime/Top/pokemon-porn-r34-2039262.gif",
+		"file:///home/sky/etc/Mine/Anime/Top/aB1eV5A_460sv.apng",
+		"file:///home/sky/etc/Mine/Anime/Top/a105tpyo.png",
+		"file:///home/sky/etc/Mine/Anime/Top/pokemon-porn-r34-2039262.gif",
+		"file:///home/sky/etc/Mine/Anime/Top/aB1eV5A_460sv.apng",
+		"file:///home/sky/etc/Mine/Anime/Top/a105tpyo.png",
+		"file:///home/sky/etc/Mine/Anime/Top/pokemon-porn-r34-2039262.gif",
+		"file:///home/sky/etc/Mine/Anime/Top/aB1eV5A_460sv.apng",
+		"file:///home/sky/etc/Mine/Anime/Top/a105tpyo.png",
+		"file:///home/sky/etc/Mine/Anime/Top/pokemon-porn-r34-2039262.gif",
+		"file:///home/sky/etc/Mine/Anime/Top/aB1eV5A_460sv.apng",
+		"file:///home/sky/etc/Mine/Anime/Top/a105tpyo.png",
+		"file:///home/sky/etc/Mine/Anime/Top/pokemon-porn-r34-2039262.gif"
+	]
 
-		anchors.centerIn: parent
-		height: Math.min(sourceSize.height, parent.height)
-		width: Math.min(sourceSize.width, parent.width)
+	ListView {
+		id: animList
+		anchors.fill: parent
+		snapMode: ListView.SnapOneItem
+		orientation: ListView.Horizontal
+		highlightRangeMode: ListView.StrictlyEnforceRange
 
-		source: "file:///home/sky/etc/Mine/Anime/Top/aB1eV5A_460sv.apng"
-		asynchronous: true
-		cache: false
-		fillMode: Image.PreserveAspectFit
+		clip: true
 
-		onPlayingChanged: {
-			if(frameCount > 1)
-				playing = true;
+		model: imageModel
+
+		delegate: Item {
+			width: animList.width
+			height: animList.height
+
+			ProgressBar {
+				anchors.left: parent.left
+				anchors.right: parent.right
+				anchors.top: parent.top
+				z: 5
+
+				value: animator.progress
+				visible: value != 1.0
+			}
+
+			PImage {
+				id: animator
+				source: imageModel[index]
+			}
 		}
-		onStatusChanged: playing = (status == AnimatedImage.Ready)
 	}
 }
