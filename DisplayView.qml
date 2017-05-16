@@ -69,6 +69,7 @@ Page {
 		snapMode: ListView.SnapOneItem
 		orientation: ListView.Horizontal
 		highlightRangeMode: ListView.StrictlyEnforceRange
+		highlightMoveDuration: 250
 
 		clip: true
 
