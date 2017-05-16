@@ -7,7 +7,6 @@
 #include <QPixmap>
 #include <QQueue>
 #include "displaywindow.h"
-#include "qatomicbool.h"
 
 class ImageLoader : public QThread
 {
@@ -43,7 +42,7 @@ private:
 
 	DisplayWindow::ViewInfo nextInfo;
 	QSize nextScreenSize;
-	QAtomicBool hasNextInfo;
+	bool hasNextInfo;
 };
 
 #endif // IMAGELOADER_H

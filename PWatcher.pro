@@ -5,11 +5,11 @@
 #-------------------------------------------------
 
 QT       += core gui
+TEMPLATE = app
 
-greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
+QT += gui widgets
 
 TARGET = PWatcher
-TEMPLATE = app
 VERSION = 1.0.0
 
 DEFINES += "TARGET=\\\"$$TARGET\\\""
@@ -29,22 +29,18 @@ win32 {
 	DEFINES += "DISPLAY_NAME=\"\\\"$$TARGET\\\"\""
 }
 
-include(/var/C++Libraries/Qt/OBSOLETE/QAtomicBool/qatomicbool.pri)
-include(/var/C++Libraries/Qt/Own/QPathEdit/qpathedit.pri)
+include(vendor/vendor.pri)
 
 SOURCES += main.cpp\
 		controldialog.cpp \
 	displaywindow.cpp \
-	imageloader.cpp \
-	formatsdialog.cpp
+	imageloader.cpp
 
 HEADERS  += controldialog.h \
 	displaywindow.h \
-	imageloader.h \
-	formatsdialog.h
+	imageloader.h
 
-FORMS    += controldialog.ui \
-	formatsdialog.ui
+FORMS    += controldialog.ui
 
 RESOURCES += \
 	pwatcher_res.qrc

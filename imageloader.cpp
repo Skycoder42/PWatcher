@@ -90,7 +90,7 @@ void ImageLoader::run()
 				Q_ASSERT(this->currentIndex < this->mainInfo.files.size());
 				const QFileInfo &info = this->mainInfo.files[this->currentIndex];
 
-				if(this->mainInfo.movieFormats.contains(info.suffix())) {
+				if(QMovie::supportedFormats().contains(info.suffix().toUtf8())) {
 					this->movieMutex.lock();
 					Q_ASSERT(!this->movieBase.isEmpty());
 					QSharedPointer<QMovie> movie(this->movieBase.first());

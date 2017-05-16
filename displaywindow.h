@@ -20,7 +20,6 @@ public:
 		bool random;
 		bool repeat;
 		int waitDelay;
-		QStringList movieFormats;
 		int minMovieLoop;
 	};
 	struct ImageObject {

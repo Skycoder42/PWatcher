@@ -22,13 +22,9 @@ public:
 
 	void accept() Q_DECL_OVERRIDE;
 
-private slots:
-	void on_formatsButton_clicked();
-
 private:
 	Ui::ControlDialog *ui;
 	DisplayWindow *display;
-	QList<ImageFormat> formats;
 };
 
 #endif // CONTROLDIALOG_H

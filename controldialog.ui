@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>452</width>
-    <height>286</height>
+    <height>349</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -173,6 +173,9 @@
      </item>
      <item row="0" column="1">
       <widget class="QPathEdit" name="imageFolderPathEdit">
+       <property name="style">
+        <enum>QPathEdit::JoinedButton</enum>
+       </property>
        <property name="pathMode">
         <enum>QPathEdit::ExistingFolder</enum>
        </property>
@@ -245,16 +248,6 @@
       <number>9</number>
      </property>
      <item>
-      <widget class="QPushButton" name="formatsButton">
-       <property name="text">
-        <string>Formats</string>
-       </property>
-       <property name="autoDefault">
-        <bool>false</bool>
-       </property>
-      </widget>
-     </item>
-     <item>
       <spacer name="horizontalSpacer_2">
        <property name="orientation">
         <enum>Qt::Horizontal</enum>
@@ -307,7 +300,6 @@
   <tabstop>filterFiletypesCheckBox</tabstop>
   <tabstop>startButton</tabstop>
   <tabstop>quitButton</tabstop>
-  <tabstop>formatsButton</tabstop>
  </tabstops>
  <resources/>
  <connections>
