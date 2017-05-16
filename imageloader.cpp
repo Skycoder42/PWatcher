@@ -16,39 +16,39 @@ ImageLoader::ImageLoader(QObject *parent) :
 	nextScreenSize(),
 	hasNextInfo(false)
 {
-	this->setTerminationEnabled(true);
-	this->start();
+	setTerminationEnabled(true);
+	start();
 }
 
 ImageLoader::~ImageLoader()
 {
-	this->requestInterruption();
-	if(!this->wait(3000))
-		this->terminate();
+	requestInterruption();
+	if(!wait(3000))
+		terminate();
 }
 
 void ImageLoader::updateLoad()
 {
-	this->loaderSemaphore.release();
+	loaderSemaphore.release();
 }
 
 void ImageLoader::resetData(const DisplayWindow::ViewInfo &mainInfo, const QSize &screenSize)
 {
-	Q_ASSERT(!this->hasNextInfo);
-	while(this->loaderSemaphore.tryAcquire());
-	this->nextInfo = mainInfo;
-	this->nextScreenSize = screenSize;
-	this->hasNextInfo = true;
-	while(this->hasNextInfo)
+	Q_ASSERT(!hasNextInfo);
+	while(loaderSemaphore.tryAcquire());
+	nextInfo = mainInfo;
+	nextScreenSize = screenSize;
+	hasNextInfo = true;
+	while(hasNextInfo)
 		QThread::msleep(50);
 }
 
 void ImageLoader::updateMovieBase(const QSharedPointer<QMovie> &movieBase)
 {
-	this->movieMutex.lock();
+	movieMutex.lock();
 	movieBase->setCacheMode(QMovie::CacheAll);
 	this->movieBase.enqueue(movieBase);
-	this->movieMutex.unlock();
+	movieMutex.unlock();
 }
 
 void ImageLoader::run()
@@ -56,54 +56,54 @@ void ImageLoader::run()
 	qsrand(QDateTime::currentMSecsSinceEpoch());
 
 	do {
-		if(this->hasNextInfo) {
-			this->mainInfo = this->nextInfo;
-			this->screenSize = this->nextScreenSize;
-			this->currentIndex = -1;
-			this->loaderSemaphore.release(ImageLoader::PreloadAmount);
-			this->hasNextInfo = false;
+		if(hasNextInfo) {
+			mainInfo = nextInfo;
+			screenSize = nextScreenSize;
+			currentIndex = -1;
+			loaderSemaphore.release(ImageLoader::PreloadAmount);
+			hasNextInfo = false;
 		}
 
-		if(this->loaderSemaphore.tryAcquire(1, 100)) {
-			if(this->mainInfo.files.isEmpty())
+		if(loaderSemaphore.tryAcquire(1, 100)) {
+			if(mainInfo.files.isEmpty())
 				continue;
 			DisplayWindow::ImageObject imageObject;
 
 			do {
-				if(this->isInterruptionRequested())
+				if(isInterruptionRequested())
 					break;
 
-				if(this->mainInfo.random) {
+				if(mainInfo.random) {
 					do {
-						this->currentIndex = qFloor(qrand() * this->mainInfo.files.size()) / RAND_MAX;
-					} while(this->currentIndex >= this->mainInfo.files.size());
+						currentIndex = qFloor(qrand() * mainInfo.files.size()) / RAND_MAX;
+					} while(currentIndex >= mainInfo.files.size());
 				} else {
-					if(++this->currentIndex >= this->mainInfo.files.size()) {
-						if(this->mainInfo.repeat)
-							this->currentIndex = 0;
+					if(++currentIndex >= mainInfo.files.size()) {
+						if(mainInfo.repeat)
+							currentIndex = 0;
 						else
 							break;
 					}
 				}
 
-				Q_ASSERT(this->currentIndex >= 0);
-				Q_ASSERT(this->currentIndex < this->mainInfo.files.size());
-				const QFileInfo &info = this->mainInfo.files[this->currentIndex];
+				Q_ASSERT(currentIndex >= 0);
+				Q_ASSERT(currentIndex < mainInfo.files.size());
+				const QFileInfo &info = mainInfo.files[currentIndex];
 
 				if(QMovie::supportedFormats().contains(info.suffix().toUtf8())) {
-					this->movieMutex.lock();
-					Q_ASSERT(!this->movieBase.isEmpty());
-					QSharedPointer<QMovie> movie(this->movieBase.first());
-					this->movieMutex.unlock();
+					movieMutex.lock();
+					Q_ASSERT(!movieBase.isEmpty());
+					QSharedPointer<QMovie> movie(movieBase.first());
+					movieMutex.unlock();
 
 					movie->setFileName(info.absoluteFilePath());
 					if(movie->isValid()) {
 						movie->setBackgroundColor(Qt::transparent);
 						movie->jumpToNextFrame();
 						QSize movieSize = movie->frameRect().size();
-						if(movieSize.width() > this->screenSize.width() ||
-						   movieSize.height() > this->screenSize.height()) {
-							movieSize = movieSize.scaled(this->screenSize, Qt::KeepAspectRatio);
+						if(movieSize.width() > screenSize.width() ||
+						   movieSize.height() > screenSize.height()) {
+							movieSize = movieSize.scaled(screenSize, Qt::KeepAspectRatio);
 							movie->setScaledSize(movieSize);
 						}
 
@@ -112,16 +112,16 @@ void ImageLoader::run()
 						imageObject.movie = movie;
 						imageObject.fileName = info.absoluteFilePath();
 
-						this->movieMutex.lock();
-						this->movieBase.dequeue();
-						this->movieMutex.unlock();
+						movieMutex.lock();
+						movieBase.dequeue();
+						movieMutex.unlock();
 					}
 				} else {
 					QPixmap image(info.absoluteFilePath());
 					if(!image.isNull()) {
-						if(image.width() > this->screenSize.width() ||
-						   image.height() > this->screenSize.height()) {
-							image = image.scaled(this->screenSize, Qt::KeepAspectRatio, Qt::SmoothTransformation);
+						if(image.width() > screenSize.width() ||
+						   image.height() > screenSize.height()) {
+							image = image.scaled(screenSize, Qt::KeepAspectRatio, Qt::SmoothTransformation);
 						}
 						imageObject.isMovie = false;
 						imageObject.pixmap = image;
@@ -134,5 +134,5 @@ void ImageLoader::run()
 			if(!imageObject.isNull())
 				emit loadReady(imageObject);
 		}
-	} while(!this->isInterruptionRequested());
+	} while(!isInterruptionRequested());
 }

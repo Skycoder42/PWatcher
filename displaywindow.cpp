@@ -26,26 +26,26 @@ DisplayWindow::DisplayWindow(QWidget *parent) :
 	shouldNext(false),
 	mouseHideTimer(new QTimer(this))
 {
-	this->setWindowTitle(tr("Diashow"));
-	this->setAttribute(Qt::WA_DeleteOnClose);
-	this->setAlignment(Qt::AlignCenter);
-	this->setScaledContents(false);
-	this->setContextMenuPolicy(Qt::ActionsContextMenu);
-	this->setAutoFillBackground(true);
-	this->setMouseTracking(true);
-	QPalette pal = this->palette();
+	setWindowTitle(tr("Diashow"));
+	setAttribute(Qt::WA_DeleteOnClose);
+	setAlignment(Qt::AlignCenter);
+	setScaledContents(false);
+	setContextMenuPolicy(Qt::ActionsContextMenu);
+	setAutoFillBackground(true);
+	setMouseTracking(true);
+	QPalette pal = palette();
 	pal.setColor(QPalette::Window, Qt::black);
 	pal.setColor(QPalette::WindowText, Qt::white);
-	this->setPalette(pal);
+	setPalette(pal);
 
 	connect(this, &DisplayWindow::destroyed,
 			qApp, &QApplication::quit);
 	connect(parent, &QWidget::destroyed,
 			this, &DisplayWindow::deleteLater);
 
-	connect(this->displayTimer, &QTimer::timeout,
+	connect(displayTimer, &QTimer::timeout,
 			this, &DisplayWindow::timerNext);
-	connect(this->loader, &ImageLoader::loadReady,
+	connect(loader, &ImageLoader::loadReady,
 			this, &DisplayWindow::imageLoaded, Qt::QueuedConnection);
 
 	//create actions
@@ -80,60 +80,60 @@ DisplayWindow::DisplayWindow(QWidget *parent) :
 	connect(quitAction, &QAction::triggered,
 			this, &DisplayWindow::close);
 
-	this->addActions({
-						 playAction,
-						 nextAction,
-						 previousAction,
-						 seperator(this),
-						 deleteAction,
-						 seperator(this),
-						 closeAction,
-						 quitAction
-					 });
+	addActions({
+				   playAction,
+				   nextAction,
+				   previousAction,
+				   seperator(this),
+				   deleteAction,
+				   seperator(this),
+				   closeAction,
+				   quitAction
+			   });
 
 	for(int i = 0; i < ImageLoader::PreloadAmount; ++i) {
 		QSharedPointer<QMovie> movie(new QMovie());
-		this->loader->updateMovieBase(movie);
+		loader->updateMovieBase(movie);
 	}
 
 	//start cursor hiding timer
-	this->mouseHideTimer->setSingleShot(true);
-	this->mouseHideTimer->setInterval(1000);
-	connect(this->mouseHideTimer, &QTimer::timeout,
+	mouseHideTimer->setSingleShot(true);
+	mouseHideTimer->setInterval(1000);
+	connect(mouseHideTimer, &QTimer::timeout,
 			this, &DisplayWindow::hideMouse);
 }
 
 void DisplayWindow::setInfo(const DisplayWindow::ViewInfo &viewInfo)
 {
-	this->mainInfo = viewInfo;
-	this->loader->resetData(viewInfo, QApplication::desktop()->screenGeometry(this).size());
-	this->displayTimer->setInterval(viewInfo.waitDelay);
-	this->imageQueue.clear();
-	this->backCache.clear();
-	this->showIndex = -1;
+	mainInfo = viewInfo;
+	loader->resetData(viewInfo, QApplication::desktop()->screenGeometry(this).size());
+	displayTimer->setInterval(viewInfo.waitDelay);
+	imageQueue.clear();
+	backCache.clear();
+	showIndex = -1;
 	if(viewInfo.files.isEmpty())
-		this->setObject(tr("The selected directory has no loadable images!"));
+		setObject(tr("The selected directory has no loadable images!"));
 	else
-		this->setObject(tr("Loading images, please wait…"));
+		setObject(tr("Loading images, please wait…"));
 }
 
 void DisplayWindow::startShow(bool blackOutScreens)
 {
-	this->showFullScreen();
-	this->raise();
-	this->activateWindow();
-	this->displayTimer->start();
-	this->mouseHideTimer->start();
-	if(this->imageQueue.isEmpty())
+	showFullScreen();
+	raise();
+	activateWindow();
+	displayTimer->start();
+	mouseHideTimer->start();
+	if(imageQueue.isEmpty())
 		QTimer::singleShot(250, this, &DisplayWindow::showNext);
 	else
-		this->showNext();
+		showNext();
 
 	//"black out" all other screens
 	if(blackOutScreens) {
 		QList<QScreen*> screens = QApplication::screens();
 		foreach(QScreen *screen, screens) {
-			if(screen != this->windowHandle()->screen()) {
+			if(screen != windowHandle()->screen()) {
 				QWidget *blackScreen = new QWidget(this, Qt::Window);
 				blackScreen->setAttribute(Qt::WA_DeleteOnClose);
 				connect(this, &DisplayWindow::hidden,
@@ -153,48 +153,48 @@ void DisplayWindow::startShow(bool blackOutScreens)
 
 void DisplayWindow::stopShow()
 {
-	this->displayTimer->stop();
-	this->setObject(tr("No Image folder loaded!"));
-	this->hide();
-	this->controlParent->show();
-	this->controlParent->raise();
-	this->controlParent->activateWindow();
+	displayTimer->stop();
+	setObject(tr("No Image folder loaded!"));
+	hide();
+	controlParent->show();
+	controlParent->raise();
+	controlParent->activateWindow();
 }
 
 void DisplayWindow::mouseMoveEvent(QMouseEvent *ev)
 {
-	this->setCursor(Qt::ArrowCursor);
-	this->mouseHideTimer->start();
-	this->QLabel::mouseMoveEvent(ev);
+	setCursor(Qt::ArrowCursor);
+	mouseHideTimer->start();
+	QLabel::mouseMoveEvent(ev);
 }
 
 void DisplayWindow::hideEvent(QHideEvent *ev)
 {
-	this->QLabel::hideEvent(ev);
+	QLabel::hideEvent(ev);
 	emit hidden();
 }
 
 void DisplayWindow::showNext()
 {
-	if(this->showIndex == this->backCache.lastIndex()) {
-		if(!this->imageQueue.isEmpty()) {
-			ImageObject obj = this->imageQueue.dequeue();
-			this->loader->updateLoad();
-			this->backCache.append(obj);
-			this->showIndex++;
-			this->setObject(obj);
+	if(showIndex == backCache.lastIndex()) {
+		if(!imageQueue.isEmpty()) {
+			ImageObject obj = imageQueue.dequeue();
+			loader->updateLoad();
+			backCache.append(obj);
+			showIndex++;
+			setObject(obj);
 		}
 	} else {
-		Q_ASSERT(this->backCache.containsIndex(this->showIndex + 1));
-		this->setObject(this->backCache.at(++this->showIndex));
+		Q_ASSERT(backCache.containsIndex(showIndex + 1));
+		setObject(backCache.at(++showIndex));
 	}
 }
 
 void DisplayWindow::showPrevious()
 {
-	if(this->showIndex > this->backCache.firstIndex()) {
-		Q_ASSERT(this->backCache.containsIndex(this->showIndex - 1));
-		this->setObject(this->backCache.at(--this->showIndex));
+	if(showIndex > backCache.firstIndex()) {
+		Q_ASSERT(backCache.containsIndex(showIndex - 1));
+		setObject(backCache.at(--showIndex));
 	}
 }
 
@@ -202,61 +202,61 @@ void DisplayWindow::imageLoaded(const ImageObject &object)
 {
 	if(object.isMovie) {
 		QSharedPointer<QMovie> movie(new QMovie());
-		this->loader->updateMovieBase(movie);
+		loader->updateMovieBase(movie);
 	}
-	this->imageQueue.enqueue(object);
+	imageQueue.enqueue(object);
 }
 
 void DisplayWindow::updateMovieLoops(int currentFrame)
 {
 	Q_ASSERT(dynamic_cast<QMovie*>(QObject::sender()));
 	if(currentFrame == (static_cast<QMovie*>(QObject::sender())->frameCount() - 1)) {
-		if(++this->currentLoops >= this->mainInfo.minMovieLoop &&
-		   this->shouldNext) {
-			this->shouldNext = false;
-			this->next();
+		if(++currentLoops >= mainInfo.minMovieLoop &&
+		   shouldNext) {
+			shouldNext = false;
+			next();
 		}
 	}
 }
 
 void DisplayWindow::timerNext()
 {
-	if(this->loopCon) {
-		if(this->currentLoops < this->mainInfo.minMovieLoop) {
-			this->shouldNext = true;
+	if(loopCon) {
+		if(currentLoops < mainInfo.minMovieLoop) {
+			shouldNext = true;
 			return;
 		}
 	}
 
-	this->showNext();
+	showNext();
 }
 
 void DisplayWindow::togglePlay()
 {
-	if(this->displayTimer->isActive())
-		this->displayTimer->stop();
+	if(displayTimer->isActive())
+		displayTimer->stop();
 	else
-		this->displayTimer->start();
+		displayTimer->start();
 }
 
 void DisplayWindow::next()
 {
-	this->showNext();
-	if(this->displayTimer->isActive())
-		this->displayTimer->start();
+	showNext();
+	if(displayTimer->isActive())
+		displayTimer->start();
 }
 
 void DisplayWindow::previous()
 {
-	this->showPrevious();
-	if(this->displayTimer->isActive())
-		this->displayTimer->start();
+	showPrevious();
+	if(displayTimer->isActive())
+		displayTimer->start();
 }
 
 void DisplayWindow::deleteCurrent()
 {
-	Q_ASSERT(this->backCache.containsIndex(this->showIndex));
-	QString path = this->backCache.at(this->showIndex).fileName;
+	Q_ASSERT(backCache.containsIndex(showIndex));
+	QString path = backCache.at(showIndex).fileName;
 
 #ifdef Q_OS_WIN
 	path.append(QLatin1Char('\0'));
@@ -274,60 +274,60 @@ void DisplayWindow::deleteCurrent()
 //#error "NOT IMPLEMENTED"
 #endif
 
-	this->next();
+	next();
 }
 
 void DisplayWindow::setObject(const DisplayWindow::ImageObject &object)
 {
-	QMovie *oldMovie = this->movie();
+	QMovie *oldMovie = movie();
 	if(oldMovie) {
-		this->disconnect(this->loopCon);
-		this->loopCon = QMetaObject::Connection();
-		this->currentLoops = 0;
+		disconnect(loopCon);
+		loopCon = QMetaObject::Connection();
+		currentLoops = 0;
 		oldMovie->stop();
 	}
 
 	if(object.isNull())
-		this->setText(tr("Invalid image!"));
+		setText(tr("Invalid image!"));
 	else {
 		if(object.isMovie) {
-			this->loopCon = connect(object.movie.data(), &QMovie::frameChanged,
+			loopCon = connect(object.movie.data(), &QMovie::frameChanged,
 									this, &DisplayWindow::updateMovieLoops);
 			object.movie->start();
-			this->setMovie(object.movie.data());
+			setMovie(object.movie.data());
 		} else
-			this->setPixmap(object.pixmap);
+			setPixmap(object.pixmap);
 	}
 
-	this->repaint();
+	repaint();
 }
 
 void DisplayWindow::setObject(const QString &placeholder)
 {
-	QMovie *oldMovie = this->movie();
+	QMovie *oldMovie = movie();
 	if(oldMovie) {
-		this->disconnect(this->loopCon);
-		this->loopCon = QMetaObject::Connection();
-		this->currentLoops = 0;
+		disconnect(loopCon);
+		loopCon = QMetaObject::Connection();
+		currentLoops = 0;
 		oldMovie->stop();
 	}
-	this->setText(placeholder);
-	this->repaint();
+	setText(placeholder);
+	repaint();
 }
 
 void DisplayWindow::hideMouse()
 {
-	this->setCursor(Qt::BlankCursor);
+	setCursor(Qt::BlankCursor);
 }
 
 
 
 bool DisplayWindow::ImageObject::isNull() const
 {
-	if(this->isMovie)
-		return this->movie.isNull();
+	if(isMovie)
+		return movie.isNull();
 	else
-		return this->pixmap.isNull();
+		return pixmap.isNull();
 }
 
 

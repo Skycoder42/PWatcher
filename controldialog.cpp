@@ -14,21 +14,21 @@ ControlDialog::ControlDialog(QWidget *parent) :
 	display(new DisplayWindow(this))
 {
 	ui->setupUi(this);
-	this->ui->imageFolderPathEdit->setDefaultDirectory(QStandardPaths::writableLocation(QStandardPaths::PicturesLocation));
-	this->setTabOrder(this->ui->imageFolderPathEdit, this->ui->linearModeButton);
+	ui->imageFolderPathEdit->setDefaultDirectory(QStandardPaths::writableLocation(QStandardPaths::PicturesLocation));
+	setTabOrder(ui->imageFolderPathEdit, ui->linearModeButton);
 
 	QSettings settings;
 	settings.beginGroup(QStringLiteral("viewSettings"));
 	settings.beginGroup(QStringLiteral("mode"));
-	this->ui->linearModeButton->setChecked(settings.value(QStringLiteral("normal"), false).toBool());
-	this->ui->shuffleModeButton->setChecked(settings.value(QStringLiteral("shuffle"), true).toBool());
-	this->ui->randomModeButton->setChecked(settings.value(QStringLiteral("random"), false).toBool());
+	ui->linearModeButton->setChecked(settings.value(QStringLiteral("normal"), false).toBool());
+	ui->shuffleModeButton->setChecked(settings.value(QStringLiteral("shuffle"), true).toBool());
+	ui->randomModeButton->setChecked(settings.value(QStringLiteral("random"), false).toBool());
 	settings.endGroup();
-	this->ui->loopCheckBox->setChecked(settings.value(QStringLiteral("loop"), true).toBool());
-	this->ui->displayTimeDoubleSpinBox->setValue(settings.value(QStringLiteral("delay"), 5.0).toDouble());
-	this->ui->movieMinimumLoopCountSpinBox->setValue(settings.value(QStringLiteral("movieLoops"), 1).toInt());
-	this->ui->filterFiletypesCheckBox->setChecked(settings.value(QStringLiteral("filters"), true).toBool());
-	this->ui->blackOutScreensCheckBox->setChecked(settings.value(QStringLiteral("blackOut"), true).toBool());
+	ui->loopCheckBox->setChecked(settings.value(QStringLiteral("loop"), true).toBool());
+	ui->displayTimeDoubleSpinBox->setValue(settings.value(QStringLiteral("delay"), 5.0).toDouble());
+	ui->movieMinimumLoopCountSpinBox->setValue(settings.value(QStringLiteral("movieLoops"), 1).toInt());
+	ui->filterFiletypesCheckBox->setChecked(settings.value(QStringLiteral("filters"), true).toBool());
+	ui->blackOutScreensCheckBox->setChecked(settings.value(QStringLiteral("blackOut"), true).toBool());
 	settings.endGroup();
 }
 
@@ -41,9 +41,9 @@ void ControlDialog::setPath(const QString &path)
 {
 	QFileInfo fileInfo(path);
 	if(fileInfo.isDir())
-		this->ui->imageFolderPathEdit->setPath(path);
+		ui->imageFolderPathEdit->setPath(path);
 	else
-		this->ui->imageFolderPathEdit->setPath(fileInfo.path());
+		ui->imageFolderPathEdit->setPath(fileInfo.path());
 }
 
 void ControlDialog::accept()
@@ -51,33 +51,33 @@ void ControlDialog::accept()
 	QSettings settings;
 	settings.beginGroup(QStringLiteral("viewSettings"));
 	settings.beginGroup(QStringLiteral("mode"));
-	settings.setValue(QStringLiteral("normal"), this->ui->linearModeButton->isChecked());
-	settings.setValue(QStringLiteral("shuffle"), this->ui->shuffleModeButton->isChecked());
-	settings.setValue(QStringLiteral("random"), this->ui->randomModeButton->isChecked());
+	settings.setValue(QStringLiteral("normal"), ui->linearModeButton->isChecked());
+	settings.setValue(QStringLiteral("shuffle"), ui->shuffleModeButton->isChecked());
+	settings.setValue(QStringLiteral("random"), ui->randomModeButton->isChecked());
 	settings.endGroup();
-	settings.setValue(QStringLiteral("loop"), this->ui->loopCheckBox->isChecked());
-	settings.setValue(QStringLiteral("delay"), this->ui->displayTimeDoubleSpinBox->value());
-	settings.setValue(QStringLiteral("movieLoops"), this->ui->movieMinimumLoopCountSpinBox->value());
-	settings.setValue(QStringLiteral("filters"), this->ui->filterFiletypesCheckBox->isChecked());
-	settings.setValue(QStringLiteral("blackOut"), this->ui->blackOutScreensCheckBox->isChecked());
+	settings.setValue(QStringLiteral("loop"), ui->loopCheckBox->isChecked());
+	settings.setValue(QStringLiteral("delay"), ui->displayTimeDoubleSpinBox->value());
+	settings.setValue(QStringLiteral("movieLoops"), ui->movieMinimumLoopCountSpinBox->value());
+	settings.setValue(QStringLiteral("filters"), ui->filterFiletypesCheckBox->isChecked());
+	settings.setValue(QStringLiteral("blackOut"), ui->blackOutScreensCheckBox->isChecked());
 	settings.endGroup();
 
 	DisplayWindow::ViewInfo info;
 
-	QFileInfo fileInfo(this->ui->imageFolderPathEdit->path());
+	QFileInfo fileInfo(ui->imageFolderPathEdit->path());
 	QDir searchDir;
 	if(fileInfo.isDir())
 		searchDir = QDir(fileInfo.absoluteFilePath());
 	else
 		searchDir = fileInfo.dir();
 	searchDir.setFilter(QDir::Files | QDir::NoDotAndDotDot | QDir::Readable);
-	QStringList editFilters = this->ui->liMitToFiletypeLineEdit->text()
+	QStringList editFilters = ui->liMitToFiletypeLineEdit->text()
 							  .split(QRegularExpression(QStringLiteral(R"__(\s+)__")), QString::SkipEmptyParts);
 	if(!editFilters.isEmpty()) {
 		for(int i = 0, max = editFilters.size(); i < max; ++i)
 			editFilters[i] = QStringLiteral("*.") + editFilters[i];
 		searchDir.setNameFilters(editFilters);
-	} else if(this->ui->filterFiletypesCheckBox->isChecked()) {
+	} else if(ui->filterFiletypesCheckBox->isChecked()) {
 		QStringList filters;
 		foreach(auto filter, QImageReader::supportedImageFormats())
 			filters.append(QStringLiteral("*.") + filter);
@@ -85,15 +85,15 @@ void ControlDialog::accept()
 	}
 	searchDir.setSorting(QDir::Name | QDir::LocaleAware);
 	info.files = searchDir.entryInfoList();
-	if(this->ui->shuffleModeButton->isChecked())
+	if(ui->shuffleModeButton->isChecked())
 		std::random_shuffle(info.files.begin(), info.files.end());
 
-	info.random = this->ui->randomModeButton->isChecked();
-	info.repeat = this->ui->loopCheckBox->isChecked();
-	info.waitDelay = this->ui->displayTimeDoubleSpinBox->value() * 1000;
-	info.minMovieLoop = this->ui->movieMinimumLoopCountSpinBox->value();
+	info.random = ui->randomModeButton->isChecked();
+	info.repeat = ui->loopCheckBox->isChecked();
+	info.waitDelay = ui->displayTimeDoubleSpinBox->value() * 1000;
+	info.minMovieLoop = ui->movieMinimumLoopCountSpinBox->value();
 
-	this->display->setInfo(info);
-	this->display->startShow(this->ui->blackOutScreensCheckBox->isChecked());
-	this->QDialog::accept();
+	display->setInfo(info);
+	display->startShow(ui->blackOutScreensCheckBox->isChecked());
+	QDialog::accept();
 }
