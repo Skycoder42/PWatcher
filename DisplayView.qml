@@ -24,45 +24,6 @@ Page {
 		}
 	}
 
-	property var imageModel: [
-		"file:///home/sky/etc/Mine/Anime/Top/aB1eV5A_460sv.apng",
-		"file:///home/sky/etc/Mine/Anime/Top/a105tpyo.png",
-		"file:///home/sky/etc/Mine/Anime/Top/pokemon-porn-r34-2039262.gif",
-		"file:///home/sky/etc/Mine/Anime/Top/aB1eV5A_460sv.apng",
-		"file:///home/sky/etc/Mine/Anime/Top/a105tpyo.png",
-		"file:///home/sky/etc/Mine/Anime/Top/pokemon-porn-r34-2039262.gif",
-		"file:///home/sky/etc/Mine/Anime/Top/aB1eV5A_460sv.apng",
-		"file:///home/sky/etc/Mine/Anime/Top/a105tpyo.png",
-		"file:///home/sky/etc/Mine/Anime/Top/pokemon-porn-r34-2039262.gif",
-		"file:///home/sky/etc/Mine/Anime/Top/aB1eV5A_460sv.apng",
-		"file:///home/sky/etc/Mine/Anime/Top/a105tpyo.png",
-		"file:///home/sky/etc/Mine/Anime/Top/pokemon-porn-r34-2039262.gif",
-		"file:///home/sky/etc/Mine/Anime/Top/aB1eV5A_460sv.apng",
-		"file:///home/sky/etc/Mine/Anime/Top/a105tpyo.png",
-		"file:///home/sky/etc/Mine/Anime/Top/pokemon-porn-r34-2039262.gif",
-		"file:///home/sky/etc/Mine/Anime/Top/aB1eV5A_460sv.apng",
-		"file:///home/sky/etc/Mine/Anime/Top/a105tpyo.png",
-		"file:///home/sky/etc/Mine/Anime/Top/pokemon-porn-r34-2039262.gif",
-		"file:///home/sky/etc/Mine/Anime/Top/aB1eV5A_460sv.apng",
-		"file:///home/sky/etc/Mine/Anime/Top/a105tpyo.png",
-		"file:///home/sky/etc/Mine/Anime/Top/pokemon-porn-r34-2039262.gif",
-		"file:///home/sky/etc/Mine/Anime/Top/aB1eV5A_460sv.apng",
-		"file:///home/sky/etc/Mine/Anime/Top/a105tpyo.png",
-		"file:///home/sky/etc/Mine/Anime/Top/pokemon-porn-r34-2039262.gif",
-		"file:///home/sky/etc/Mine/Anime/Top/aB1eV5A_460sv.apng",
-		"file:///home/sky/etc/Mine/Anime/Top/a105tpyo.png",
-		"file:///home/sky/etc/Mine/Anime/Top/pokemon-porn-r34-2039262.gif",
-		"file:///home/sky/etc/Mine/Anime/Top/aB1eV5A_460sv.apng",
-		"file:///home/sky/etc/Mine/Anime/Top/a105tpyo.png",
-		"file:///home/sky/etc/Mine/Anime/Top/pokemon-porn-r34-2039262.gif",
-		"file:///home/sky/etc/Mine/Anime/Top/aB1eV5A_460sv.apng",
-		"file:///home/sky/etc/Mine/Anime/Top/a105tpyo.png",
-		"file:///home/sky/etc/Mine/Anime/Top/pokemon-porn-r34-2039262.gif",
-		"file:///home/sky/etc/Mine/Anime/Top/aB1eV5A_460sv.apng",
-		"file:///home/sky/etc/Mine/Anime/Top/a105tpyo.png",
-		"file:///home/sky/etc/Mine/Anime/Top/pokemon-porn-r34-2039262.gif"
-	]
-
 	ListView {
 		id: animList
 		anchors.fill: parent
@@ -91,7 +52,7 @@ Page {
 
 			PImage {
 				id: animator
-				source: imageModel[index]
+				source: imageUrl
 			}
 		}
 	}

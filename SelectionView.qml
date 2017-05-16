@@ -200,6 +200,13 @@ Page {
 		imageSource: "image://svg/icons/ic_slideshow"
 		Material.foreground: "#FFF"
 
-		onClicked: mainStack.push(displayCmp)
+		onClicked: {
+			imageModel.setupModel(settings.folder,
+								  settings.recursive,
+								  limitField.text,
+								  settings.mode,
+								  settings.loop);
+			mainStack.push(displayCmp);
+		}
 	}
 }

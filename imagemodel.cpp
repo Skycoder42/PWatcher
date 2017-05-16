@@ -36,5 +36,11 @@ bool ImageModel::canFetchMore(const QModelIndex &parent) const
 
 QHash<int, QByteArray> ImageModel::roleNames() const
 {
-	return {};
+	return {
+		{ImageUrlRole, "imageUrl"}
+	};
+}
+
+void ImageModel::setupModel(const QString &path, bool recursive, const QString &filters, int playMode, bool loop)
+{
 }
