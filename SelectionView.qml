@@ -57,9 +57,8 @@ Page {
 					}
 
 					AppBarButton {
-						size: dirField.height
 						text: qsTr("Select a directory")
-						imageSource: "image://svg/icons/ic_add"
+						imageSource: "image://svg/icons/ic_folder_open"
 
 						onClicked: dialog.open()
 
@@ -200,5 +199,7 @@ Page {
 		text: qsTr("Start Diashow")
 		imageSource: "image://svg/icons/ic_slideshow"
 		Material.foreground: "#FFF"
+
+		onClicked: mainStack.push(displayCmp)
 	}
 }

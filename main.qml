@@ -6,12 +6,23 @@ import de.skycoder42.quickextras 2.0
 ApplicationWindow {
 	visible: true
 	width: 400
-	height: 480
+	height: 600
 	title: qsTr("PWatcher")
 
-	SelectionView {
-		id: selectView
-
+	StackView {
 		anchors.fill: parent
+		id: mainStack
+
+		initialItem: SelectionView {
+			id: selectView
+		}
+	}
+
+	Component {
+		id: displayCmp
+
+		DisplayView {
+
+		}
 	}
 }

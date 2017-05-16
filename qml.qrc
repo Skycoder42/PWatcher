@@ -2,10 +2,12 @@
     <qresource prefix="/qml">
         <file>main.qml</file>
         <file>SelectionView.qml</file>
+        <file>DisplayView.qml</file>
     </qresource>
     <qresource prefix="/icons">
         <file alias="ic_add.svg">icons/ic_add_white_24px.svg</file>
         <file alias="ic_slideshow.svg">icons/ic_slideshow_white_24px.svg</file>
+        <file alias="ic_folder_open.svg">icons/ic_folder_open_white_24px.svg</file>
     </qresource>
     <qresource prefix="/">
         <file>qtquickcontrols2.conf</file>
