@@ -38,12 +38,6 @@ Page {
 		rootWindow.showNormal();
 	}
 
-	CursorArea {
-		anchors.fill: parent
-		z: 5
-		onContextClick: contextMenu.open()
-	}
-
 	Labs.Menu {
 		id: contextMenu
 
@@ -118,6 +112,18 @@ Page {
 		}
 	}
 
+	CursorArea {
+		id: cursorArea
+		anchors.fill: parent
+		z: 5
+		onContextClick: contextMenu.open()
+
+		onZoomEvent:  {
+			if(animList.currentItem)
+				animList.currentItem.zoom(delta);
+		}
+	}
+
 	Timer {
 		id: diashowTimer
 
@@ -168,6 +174,7 @@ Page {
 			view: ListView.view
 			isCurrent: ListView.isCurrentItem
 			minLoops: displayPage.animLoops
+			zoomCenter: Qt.point(cursorArea.mouseX, cursorArea.mouseY)
 
 			onAnimationPaused: diashowTimer.stop()
 			onLoopTrigger: animList.autoNext()

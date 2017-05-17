@@ -7,6 +7,8 @@ AnimatedImage {
 	property int loops: 0
 	property int minLoops: 0
 	property bool reportLoops: false
+	property double zoomFactor: 1.0
+	property point zoomCenter: Qt.point(0, 0)
 
 	signal minLoopsReached();
 
@@ -15,6 +17,7 @@ AnimatedImage {
 		currentFrame = 0;
 		loops = 0;
 		paused = false;
+		zoomFactor = 1.0;
 	}
 
 	function autoNext() {
@@ -34,6 +37,14 @@ AnimatedImage {
 	cache: false
 	mipmap: true
 	fillMode: Image.PreserveAspectFit
+
+	transform: Scale {
+		property point localCenter: mapFromItem(parent, zoomCenter.x, zoomCenter.y)
+		origin.x: localCenter.x
+		origin.y: localCenter.y
+		xScale: zoomFactor
+		yScale: zoomFactor
+	}
 
 	onPlayingChanged: {
 		if(frameCount > 1)
@@ -55,7 +66,10 @@ AnimatedImage {
 	Label {
 		id: errorLabel
 		visible: status == AnimatedImage.Error
+		anchors.centerIn: parent
+		color: "red"
 
 		text: qsTr("Failed to load image:\n%1").arg(source)
+		horizontalAlignment: Qt.AlignHCenter
 	}
 }

@@ -8,6 +8,7 @@ Item {
 	property ListView view
 	property bool isCurrent: false
 	property alias minLoops: animator.minLoops
+	property alias zoomCenter: animator.zoomCenter
 
 	signal animationPaused();
 	signal loopTrigger();
@@ -18,6 +19,10 @@ Item {
 		} else {
 			animator.paused = true;//pause to save cpu
 		}
+	}
+
+	function zoom(delta) {
+		animator.zoomFactor = Math.max(1.0, animator.zoomFactor + delta);
 	}
 
 	function toggleAnim() {

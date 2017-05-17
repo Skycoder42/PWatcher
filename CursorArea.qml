@@ -3,11 +3,12 @@ import de.skycoder42.pwatcher 1.1
 
 MouseArea {
 	id: mouseArea
-	acceptedButtons: Qt.RightButton
+	acceptedButtons: Qt.RightButton | Qt.MiddleButton
 	cursorShape: Qt.BlankCursor
 	hoverEnabled: true
 
 	signal contextClick();
+	signal zoomEvent(double delta);
 
 	onClicked: {
 		if(mouse.button == Qt.RightButton)
@@ -17,6 +18,11 @@ MouseArea {
 	onPositionChanged: {
 		cursorShape = Qt.ArrowCursor;
 		hideMouseTimer.restart();
+	}
+
+	onWheel: {
+		if(wheel.modifiers & Qt.ControlModifier)
+			zoomEvent(wheel.angleDelta.y / 600.0)
 	}
 
 	Timer {
