@@ -207,6 +207,7 @@ Page {
 								  settings.mode,
 								  settings.loop);
 			mainStack.push(displayCmp);
+			rootWindow.showFullScreen();
 		}
 	}
 }

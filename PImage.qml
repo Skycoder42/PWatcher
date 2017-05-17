@@ -10,6 +10,7 @@ AnimatedImage {
 
 	asynchronous: true
 	cache: false
+	mipmap: true
 	fillMode: Image.PreserveAspectFit
 
 	onPlayingChanged: {

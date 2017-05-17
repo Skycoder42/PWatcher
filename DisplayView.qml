@@ -20,6 +20,10 @@ Page {
 			case Qt.Key_Left:
 				animList.decrementCurrentIndex();
 				break;
+			case Qt.Key_Escape:
+				mainStack.pop();
+				rootWindow.showNormal();
+				break;
 			}
 		}
 	}
