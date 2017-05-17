@@ -6,7 +6,7 @@ pkgdesc="PWatcher Diashow Tool"
 arch=('i686' 'x86_64')
 url="https://github.com/Skycoder42/$pkgname"
 license=('BSD')
-depends=('qt5-base' 'qt5-tools')
+depends=('qt5-base' 'qt5-tools' 'qt5-quickcontrols2')
 makedepends=('git' 'qpm')
 optdepends=('qt5-imageformats: Support for additional icon types'
 			'qt5-svg: Support for SVG-Icons'
