@@ -111,20 +111,19 @@ Page {
 	MouseArea {
 		anchors.fill: parent
 		z: 5
-		acceptedButtons: Qt.LeftButton | Qt.RightButton
+		acceptedButtons: Qt.RightButton
 
 		onClicked: {
 			if(mouse.button == Qt.RightButton)
 				contextMenu.open();
 		}
-		onPressAndHold: contextMenu.open();
 	}
 
 	Timer {
 		id: diashowTimer
 
 		interval: displayTime * 1000
-		repeat: running
+		repeat: true
 		running: true
 
 		function softRestart() {
@@ -132,7 +131,7 @@ Page {
 				restart();
 		}
 
-		onTriggered: animList.incrementCurrentIndex()
+		onTriggered: animList.autoNext()
 	}
 
 	ListView {
@@ -156,9 +155,24 @@ Page {
 				currentItem.jumpAnim(count);
 		}
 
+		function autoNext() {
+			if(currentItem) {
+				if(currentItem.tryNext())
+					animList.incrementCurrentIndex();
+			}
+		}
+
 		delegate: Item {
 			width: animList.width
 			height: animList.height
+
+			ListView.onIsCurrentItemChanged: {
+				if(ListView.isCurrentItem) {//reset animation
+					animator.reset();
+				} else {
+					animator.paused = true;//pause to save cpu
+				}
+			}
 
 			function toggleAnim() {
 				animator.paused = !animator.paused;
@@ -167,6 +181,10 @@ Page {
 			}
 			function jumpAnim(count) {
 				animator.currentFrame = animator.currentFrame + count;
+			}
+
+			function tryNext() {
+				return animator.autoNext();
 			}
 
 			ProgressBar {
@@ -182,6 +200,8 @@ Page {
 			PImage {
 				id: animator
 				source: imageUrl
+				minLoops: displayPage.animLoops
+				onMinLoopsReached: animList.autoNext()
 			}
 		}
 	}

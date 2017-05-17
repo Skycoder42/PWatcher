@@ -4,6 +4,28 @@ import QtQuick.Controls 2.1
 AnimatedImage {
 	id: animator
 
+	property int loops: 0
+	property int minLoops: 0
+	property bool reportLoops: false
+
+	signal minLoopsReached();
+
+	function reset() {
+		reportLoops = false;
+		currentFrame = 0;
+		loops = 0;
+		paused = false;
+	}
+
+	function autoNext() {
+		if(loops >= minLoops)
+			return true;
+		else {
+			reportLoops = true;
+			return false;
+		}
+	}
+
 	anchors.centerIn: parent
 	height: Math.min(sourceSize.height, parent.height)
 	width: Math.min(sourceSize.width, parent.width)
@@ -18,6 +40,17 @@ AnimatedImage {
 			playing = true;
 	}
 	onStatusChanged: playing = (status == AnimatedImage.Ready)
+	onFrameChanged: {
+		if(currentFrame == 0)
+			loops++;
+	}
+
+	onLoopsChanged: {
+		if(reportLoops && loops >= minLoops) {
+			reportLoops = false;
+			minLoopsReached();
+		}
+	}
 
 	Label {
 		id: errorLabel
