@@ -41,6 +41,10 @@ Page {
 	Labs.Menu {
 		id: contextMenu
 
+		property bool displayed: false
+		onAboutToShow: displayed = true
+		onAboutToHide: displayed = false
+
 		Labs.MenuItem {
 			text: qsTr("Next")
 			shortcut: "Right"
@@ -126,7 +130,10 @@ Page {
 				restart();
 		}
 
-		onTriggered: animList.autoNext()
+		onTriggered: {
+			if(!contextMenu.displayed)
+				animList.autoNext()
+		}
 	}
 
 	ListView {
