@@ -1,5 +1,6 @@
 import QtQuick 2.8
 import QtQuick.Controls 2.1
+import Qt.labs.platform 1.0 as Labs
 
 Page {
 	id: displayPage
@@ -37,6 +38,88 @@ Page {
 		rootWindow.showNormal();
 	}
 
+	Labs.Menu {
+		id: contextMenu
+
+		Labs.MenuItem {
+			text: qsTr("Next")
+			shortcut: "Right"
+			onTriggered: animList.incrementCurrentIndex()
+		}
+		Labs.MenuItem {
+			text: qsTr("Previous")
+			shortcut: "Left"
+			onTriggered: animList.decrementCurrentIndex()
+		}
+		Labs.MenuItem {
+			text: qsTr("Toggle Play/Pause")
+			shortcut: "Space"
+			onTriggered: {
+				if(diashowTimer.running)
+					diashowTimer.stop();
+				else
+					diashowTimer.start();
+			}
+		}
+
+		Labs.MenuSeparator {}
+
+		Labs.MenuItem {
+			text: qsTr("Toggle Animation")
+			shortcut: "Enter"
+			onTriggered: animList.toggleAnimation()
+		}
+		Labs.MenuItem {
+			text: qsTr("Next Animation Frame")
+			shortcut: "Up"
+			onTriggered: animList.jumpAnimation(1)
+		}
+		Labs.MenuItem {
+			text: qsTr("Previous Animation Frame")
+			shortcut: "Down"
+			onTriggered: animList.jumpAnimation(-1)
+		}
+
+		Labs.MenuSeparator {}
+
+		Labs.MenuItem {
+			text: qsTr("Delete Current Image")
+			shortcut: "Del"
+			onTriggered:  {
+				imageModel.deleteImage(animList.currentIndex);
+				animList.incrementCurrentIndex();
+			}
+		}
+
+		Labs.MenuSeparator {}
+
+		Labs.MenuItem {
+			text: qsTr("Close Diashow")
+			shortcut: "Escape"
+			onTriggered: {
+				mainStack.pop();
+				rootWindow.showNormal();
+			}
+		}
+		Labs.MenuItem {
+			text: qsTr("Exit PWatcher")
+			shortcut: "ALT+F4"
+			onTriggered: Qt.quit()
+		}
+	}
+
+	MouseArea {
+		anchors.fill: parent
+		z: 5
+		acceptedButtons: Qt.LeftButton | Qt.RightButton
+
+		onClicked: {
+			if(mouse.button == Qt.RightButton)
+				contextMenu.open();
+		}
+		onPressAndHold: contextMenu.open();
+	}
+
 	Timer {
 		id: diashowTimer
 
@@ -49,7 +132,7 @@ Page {
 				restart();
 		}
 
-		onTriggered: {console.log("triggered"); animList.incrementCurrentIndex();}
+		onTriggered: animList.incrementCurrentIndex()
 	}
 
 	ListView {
