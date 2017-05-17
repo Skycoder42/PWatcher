@@ -1,0 +1,9 @@
+[Desktop Entry]
+Type=Application
+Version=1.1
+Name=PWatcher
+Comment=PWatcher
+Exec=pwatcher
+Icon=pwatcher
+Terminal=false
+Categories=Development;Qt;
