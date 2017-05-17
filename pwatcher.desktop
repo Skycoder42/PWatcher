@@ -1,3 +1,4 @@
+#!/usr/bin/env xdg-open
 [Desktop Entry]
 Type=Application
 Version=1.1
@@ -6,4 +7,3 @@ Comment=PWatcher
 Exec=pwatcher
 Icon=pwatcher
 Terminal=false
-Categories=Development;Qt;
