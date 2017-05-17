@@ -18,7 +18,7 @@ AnimatedImage {
 	}
 
 	function autoNext() {
-		if(loops >= minLoops)
+		if(frameCount <= 1 || loops >= minLoops)
 			return true;
 		else {
 			reportLoops = true;

@@ -4,6 +4,7 @@
         <file>SelectionView.qml</file>
         <file>DisplayView.qml</file>
         <file>PImage.qml</file>
+        <file>CursorArea.qml</file>
     </qresource>
     <qresource prefix="/icons">
         <file alias="ic_add.svg">icons/ic_add_white_24px.svg</file>

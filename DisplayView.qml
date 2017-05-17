@@ -52,7 +52,7 @@ Page {
 			onTriggered: animList.decrementCurrentIndex()
 		}
 		Labs.MenuItem {
-			text: qsTr("Toggle Play/Pause")
+			text: diashowTimer.running ? qsTr("Pause") : qsTr("Play")
 			shortcut: "Space"
 			onTriggered: {
 				if(diashowTimer.running)
@@ -108,15 +108,10 @@ Page {
 		}
 	}
 
-	MouseArea {
+	CursorArea {
 		anchors.fill: parent
 		z: 5
-		acceptedButtons: Qt.RightButton
-
-		onClicked: {
-			if(mouse.button == Qt.RightButton)
-				contextMenu.open();
-		}
+		onContextClick: contextMenu.open()
 	}
 
 	Timer {

@@ -1,3 +1,5 @@
+#include "cpphelper.h"
+
 #include <QApplication>
 #include <QQmlApplicationEngine>
 #include <QQmlContext>
@@ -10,6 +12,8 @@ int main(int argc, char *argv[])
 	QApplication app(argc, argv);
 
 	ImageModel model;
+
+	qmlRegisterSingletonType<CppHelper>("de.skycoder42.pwatcher", 1, 1, "CppHelper", &CppHelper::createQmlSingleton);
 
 	QQmlApplicationEngine engine;
 	QuickExtras::setupEngine(&engine);

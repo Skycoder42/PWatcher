@@ -161,6 +161,7 @@ Page {
 						dStepSize: 0.5
 						dValue: 5.0
 						decimals: 3
+						editable: true
 						Layout.fillWidth: true
 					}
 				}
@@ -177,6 +178,7 @@ Page {
 						from: 0
 						to: 100
 						Layout.fillWidth: true
+						editable: true
 					}
 				}
 
