@@ -2,8 +2,8 @@
 [Desktop Entry]
 Type=Application
 Version=1.1
-Name=PWatcher
-Comment=PWatcher
+Name=P-Watcher
+Comment=P-Watcher Diashow Tool
 Exec=pwatcher
 Icon=pwatcher
 Terminal=false

@@ -2,7 +2,7 @@
 pkgname=pwatcher
 pkgver=1.1.0
 pkgrel=1
-pkgdesc="PWatcher Diashow Tool"
+pkgdesc="P-Watcher Diashow Tool"
 arch=('i686' 'x86_64')
 url="https://github.com/Skycoder42/$pkgname"
 license=('BSD')
@@ -28,7 +28,7 @@ package() {
 
   make INSTALL_ROOT="$pkgdir" install
 
-  install -D -m644 ${pkgname}.desktop "$pkgdir/usr/share/applications/${pkgname}.desktop"
+  install -D -m644 de.skycoder42.${pkgname}.desktop "$pkgdir/usr/share/applications/de.skycoder42.${pkgname}.desktop"
   install -D -m644 ${pkgname}_32.png "$pkgdir/usr/share/icons/hicolor/32x32/apps/$pkgname.png"
   install -D -m644 ${pkgname}_16.png "$pkgdir/usr/share/icons/hicolor/16x16/apps/$pkgname.png"
   install -D -m644 LICENSE "$pkgdir/usr/share/licenses/$pkgname/LICENSE"
