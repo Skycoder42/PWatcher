@@ -4,28 +4,43 @@ import QtQuick.Controls 2.1
 Page {
 	id: displayPage
 
+	property double displayTime: 10.0
+	property int animLoops: 0
+
 	Rectangle {
 		anchors.fill: parent
 		color: "#111"
 		z: -10
 	}
 
-	Connections {
-		target: mainStack
-		onKeyPress: {
-			switch(key) {
-			case Qt.Key_Right:
-				animList.incrementCurrentIndex();
-				break;
-			case Qt.Key_Left:
-				animList.decrementCurrentIndex();
-				break;
-			case Qt.Key_Escape:
-				mainStack.pop();
-				rootWindow.showNormal();
-				break;
-			}
+	focus: true
+
+	Keys.onRightPressed: animList.incrementCurrentIndex()
+	Keys.onLeftPressed: animList.decrementCurrentIndex()
+	Keys.onSpacePressed: {
+		if(diashowTimer.running)
+			diashowTimer.stop();
+		else
+			diashowTimer.start();
+	}
+	Keys.onEscapePressed: {
+		mainStack.pop();
+		rootWindow.showNormal();
+	}
+
+	Timer {
+		id: diashowTimer
+
+		interval: displayTime * 1000
+		repeat: running
+		running: true
+
+		function softRestart() {
+			if(running)
+				restart();
 		}
+
+		onTriggered: {console.log("triggered"); animList.incrementCurrentIndex();}
 	}
 
 	ListView {
@@ -35,10 +50,10 @@ Page {
 		orientation: ListView.Horizontal
 		highlightRangeMode: ListView.StrictlyEnforceRange
 		highlightMoveDuration: 250
-
 		clip: true
 
 		model: imageModel
+		onCurrentIndexChanged: diashowTimer.softRestart();
 
 		delegate: Item {
 			width: animList.width

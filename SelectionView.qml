@@ -206,7 +206,10 @@ Page {
 								  limitField.text,
 								  settings.mode,
 								  settings.loop);
-			mainStack.push(displayCmp);
+			mainStack.push(displayCmp, {
+							   "displayTime": settings.displayTime,
+							   "animLoops": settings.loops
+						   });
 			rootWindow.showFullScreen();
 		}
 	}

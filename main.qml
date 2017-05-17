@@ -14,14 +14,16 @@ ApplicationWindow {
 		anchors.fill: parent
 		id: mainStack
 
-		signal keyPress(int key);
-
 		initialItem: SelectionView {
 			id: selectView
 		}
 
 		focus: true
-		Keys.onPressed: keyPress(event.key)
+		onCurrentItemChanged: {
+			if (currentItem)
+				currentItem.focus = true
+		}
+
 	}
 
 	Component {
