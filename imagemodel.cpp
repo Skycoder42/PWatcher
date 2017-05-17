@@ -84,6 +84,9 @@ bool ImageModel::canFetchMore(const QModelIndex &parent) const
 				return _baseIndex < _baseData.size();
 		case Random:
 			return true;
+		default:
+			Q_UNREACHABLE();
+			return false;
 		}
 	}
 }
