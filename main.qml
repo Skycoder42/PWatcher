@@ -8,7 +8,7 @@ ApplicationWindow {
 	visible: true
 	width: 400
 	height: 600
-	title: qsTr("PWatcher")
+	title: qsTr("P-Watcher")
 
 	StackView {
 		anchors.fill: parent
