@@ -23,6 +23,15 @@ Page {
 		else
 			diashowTimer.start();
 	}
+
+	Keys.onReturnPressed: animList.toggleAnimation()
+	Keys.onUpPressed: animList.jumpAnimation(1)
+	Keys.onDownPressed: animList.jumpAnimation(-1)
+
+	Keys.onDeletePressed: {
+		imageModel.deleteImage(animList.currentIndex);
+		animList.incrementCurrentIndex();
+	}
 	Keys.onEscapePressed: {
 		mainStack.pop();
 		rootWindow.showNormal();
@@ -55,9 +64,27 @@ Page {
 		model: imageModel
 		onCurrentIndexChanged: diashowTimer.softRestart();
 
+		function toggleAnimation() {
+			if(currentItem)
+				currentItem.toggleAnim();
+		}
+		function jumpAnimation(count) {
+			if(currentItem)
+				currentItem.jumpAnim(count);
+		}
+
 		delegate: Item {
 			width: animList.width
 			height: animList.height
+
+			function toggleAnim() {
+				animator.paused = !animator.paused;
+				if(animator.paused)
+					diashowTimer.stop();
+			}
+			function jumpAnim(count) {
+				animator.currentFrame = animator.currentFrame + count;
+			}
 
 			ProgressBar {
 				anchors.left: parent.left

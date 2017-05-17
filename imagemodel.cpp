@@ -139,3 +139,13 @@ void ImageModel::setupModel(const QUrl &path, bool recursive, const QString &fil
 	_modelData.clear();
 	endResetModel();
 }
+
+void ImageModel::deleteImage(int index)
+{
+	if(index < _modelData.size() && index >= 0) {
+		auto url = _modelData[index];
+		_baseData.removeOne(url);
+		if(!QFile::remove(url.toLocalFile()))
+			qWarning("DELETE LATER!");
+	}
+}

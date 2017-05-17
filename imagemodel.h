@@ -36,6 +36,8 @@ public slots:
 					PlayMode playMode,
 					bool loop);
 
+	void deleteImage(int index);
+
 private:
 	QList<QUrl> _baseData;
 	int _baseIndex;

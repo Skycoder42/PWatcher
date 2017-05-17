@@ -1,5 +1,5 @@
 import QtQuick 2.8
-
+import QtQuick.Controls 2.1
 
 AnimatedImage {
 	id: animator
@@ -18,4 +18,11 @@ AnimatedImage {
 			playing = true;
 	}
 	onStatusChanged: playing = (status == AnimatedImage.Ready)
+
+	Label {
+		id: errorLabel
+		visible: status == AnimatedImage.Error
+
+		text: qsTr("Failed to load image:\n%1").arg(source)
+	}
 }
