@@ -13,14 +13,14 @@ DEFINES += QT_USE_QSTRINGBUILDER
 win32 {
 	RC_ICONS += ./icons/main.ico
 	QMAKE_TARGET_COMPANY = "Skycoder42"
-	QMAKE_TARGET_PRODUCT = $$TARGET
+	QMAKE_TARGET_PRODUCT = "P-Watcher"
 	QMAKE_TARGET_DESCRIPTION = $$QMAKE_TARGET_PRODUCT
 
 	DEFINES += "COMPANY=\"\\\"$$QMAKE_TARGET_COMPANY\\\"\""
 	DEFINES += "DISPLAY_NAME=\"\\\"$$QMAKE_TARGET_PRODUCT\\\"\""
 } else {
 	DEFINES += "COMPANY=\"\\\"Skycoder42\\\"\""
-	DEFINES += "DISPLAY_NAME=\"\\\"$$TARGET\\\"\""
+	DEFINES += "DISPLAY_NAME=\"\\\"P-Watcher\\\"\""
 }
 
 include(vendor/vendor.pri)
