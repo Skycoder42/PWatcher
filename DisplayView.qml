@@ -38,6 +38,12 @@ Page {
 		rootWindow.showNormal();
 	}
 
+	CursorArea {
+		anchors.fill: parent
+		z: 5
+		onContextClick: contextMenu.open()
+	}
+
 	Labs.Menu {
 		id: contextMenu
 
@@ -112,12 +118,6 @@ Page {
 		}
 	}
 
-	CursorArea {
-		anchors.fill: parent
-		z: 5
-		onContextClick: contextMenu.open()
-	}
-
 	Timer {
 		id: diashowTimer
 
@@ -164,47 +164,13 @@ Page {
 			}
 		}
 
-		delegate: Item {
-			width: animList.width
-			height: animList.height
+		delegate: DisplayDelegate {
+			view: ListView.view
+			isCurrent: ListView.isCurrentItem
+			minLoops: displayPage.animLoops
 
-			ListView.onIsCurrentItemChanged: {
-				if(ListView.isCurrentItem) {//reset animation
-					animator.reset();
-				} else {
-					animator.paused = true;//pause to save cpu
-				}
-			}
-
-			function toggleAnim() {
-				animator.paused = !animator.paused;
-				if(animator.paused)
-					diashowTimer.stop();
-			}
-			function jumpAnim(count) {
-				animator.currentFrame = animator.currentFrame + count;
-			}
-
-			function tryNext() {
-				return animator.autoNext();
-			}
-
-			ProgressBar {
-				anchors.left: parent.left
-				anchors.right: parent.right
-				anchors.top: parent.top
-				z: 5
-
-				value: animator.progress
-				visible: value != 1.0
-			}
-
-			PImage {
-				id: animator
-				source: imageUrl
-				minLoops: displayPage.animLoops
-				onMinLoopsReached: animList.autoNext()
-			}
+			onAnimationPaused: diashowTimer.stop()
+			onLoopTrigger: animList.autoNext()
 		}
 	}
 }
