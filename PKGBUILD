@@ -12,10 +12,8 @@ optdepends=('qt5-imageformats: Support for additional icon types'
 			'qt5-svg: Support for SVG-Icons'
 			'qt5-apng-plugin: Support for APNG-Files')
 _pkgfqn=$pkgname-$pkgver
-source=("$_pkgfqn::git+https://github.com/Skycoder42/$pkgname.git#branch=rebuild" #tag=$pkgver"
-		"$pkgname.rule")
-sha256sums=('SKIP'
-            'db1097e593f0c37be1d3c08dfbdda13b81edbf12d7a0a3eab28b19eb8d71edbe')
+source=("$_pkgfqn::git+https://github.com/Skycoder42/$pkgname.git#branch=rebuild") #tag=$pkgver")
+sha256sums=('SKIP')
 
 prepare() {
   mkdir -p build
